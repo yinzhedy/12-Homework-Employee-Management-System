@@ -1,0 +1,26 @@
+{
+  "name": "12-homework-employee-management-system",
+  "version": "1.0.0",
+  "description": "homework 12 for upenn coding bootcamp fall 2021 # Unit 12 Mini-Project: Movie Database",
+  "main": "server.js",
+  "dependencies": {
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yinzhedy/12-Homework-Employee-Management-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yinzhedy/12-Homework-Employee-Management-System/issues"
+  },
+  "homepage": "https://github.com/yinzhedy/12-Homework-Employee-Management-System#readme"
+}
