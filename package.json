@@ -4,6 +4,7 @@
   "description": "homework 12 for upenn coding bootcamp fall 2021 # Unit 12 Mini-Project: Movie Database",
   "main": "server.js",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "inquirer": "^8.2.0",
     "mysql2": "^2.3.3",
     "path": "^0.12.7"

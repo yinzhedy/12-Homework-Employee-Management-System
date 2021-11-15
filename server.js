@@ -22,50 +22,206 @@ function init() {
         }
     ])
     .then((answer) => {
+        console.log(JSON.stringify(answer))
+        answerString = JSON.stringify(answer)
 
-            if (answer = 'view all departments') {
+            if (answerString == '{"menu":"view all departments"}') {
                 console.log('departments chosen')
-                db.promise()
-                .execute("DESCRIBE departments`")
-                .then(([table]) => {
-                    console.log(table);
-                }).catch(err => {
-                    console.log(err);
-                });
+                    async function fetchDepartments() {
+                        const preB = await db;  
+                        const [results, fields] = await preB.execute('SELECT * FROM departments');
+                        console.table(results);
+                        return results
+                      
+                    }
+                fetchDepartments().then(() => init())
             }
-            else if (answer = 'view all roles') {
-                db.promise()
-                .execute("DESCRIBE roles`")
-                .then(([table]) => {
-                    console.log(table);
-                }).catch(err => {
-                    console.log(err);
-                });
+            else if (answer == '{"menu":"view all roles"}') {
+                console.log('roles chosen')
+                    async function fetchRoles() {
+                        const preB = await db;  
+                        const [results, fields] = await preB.execute('SELECT * FROM roles');
+                        console.table(results);
+                        return results
+                      
+                    }
+                fetchRoles().then(() => init())
             }
-            else if (answer = 'view all employees') {
-                db.promise()
-                .execute("DESCRIBE employees`")
-                .then(([table]) => {
-                    console.log(table);
-                }).catch(err => {
-                    console.log(err);
-                }); }
-            else if (answer == 'add a department') {}
+            else if (answer == '{"menu":"view all employees"}' ) {
+                console.log('employees chosen')
+                    async function fetchEmployees() {
+                        const preB = await db;  
+                        const [results, fields] = await preB.execute('SELECT * FROM employees');
+                        console.table(results);
+                        return results
+                      
+                    }
+                fetchEmployees().then(() => init())
+                }
+            else if (answerString == '{"menu":"add a department"}') {
+                console.log('add department chosen')
+                addDepartment();
+            }
                 
-            else if (answer == 'add a role') {}
-                    // code block
-            else if (answer == 'add an employee') {}
-                    // code block
-            else if (answer == 'update an employee role') {}
-                    // code block
+            else if (answer = '{"menu":"add a role"}') {
+                console.log('add role chosen')
+                addRoleName();
+            }
+            else if (answer = '{"menu":"add an employee"}') {
+                console.log('add employee chosen')
+                addEmployeeFirstName();
+            }
+            else if (answer = '{"menu":"update a role"}') {
+                console.log('update employee role chosen')
+            }
             else { console.log('error with menu') }
     })
 }
-        //   {
-        //     type: 'input',
-        //     name: 'addDepartment',
-        //     message: 'What is the name of the department you would like to add?'
-        //   },
+
+function addDepartment() {
+        inquirer.prompt ([{
+            type: 'input',
+            name: 'addDepartment',
+            message: 'What is the name of the department you would like to add?'
+        }
+        ])
+        .then(
+            async function departmentName(name) {
+            const preB = await db;
+            await preB.execute('INSERT INTO departments (department_name) VALUES (?);', [name]);
+            console.log("Department Added!");
+        }
+        )
+        .then(() => init());
+}
+
+function addRoleName() {
+    inquirer.prompt ([{
+            type: 'input',
+            name: 'addRoleName',
+            message: "What is the name of the name of this role?"
+    }
+    ])
+    .then(
+        async function roleName(name) {
+        const preB = await db;
+        await preB.execute('INSERT INTO roles (role_name) VALUES (?);', [name]);
+        console.log("Role name Added!");
+    }
+    )
+    .then(() => addRoleSalary()); 
+};
+function addRoleSalary() {
+        inquirer.prompt ([{
+            type: 'input',
+            name: 'addRoleSalary',
+            message: "What is the salary for this new role?"
+    }
+    ])
+    .then(
+        async function roleSalary(salary) {
+        const preB = await db;
+        await preB.execute('INSERT INTO roles (role_salary) VALUES (?);', [salary]);
+        console.log("Role salary Added!");
+    }
+    )
+    .then(() => addRoleDepartment());
+};
+function addRoleDepartment() {
+        inquirer.prompt ([{
+            type: 'input',
+            name: 'addRoleDepartment',
+            message: "What department does this role belong to?"
+    }
+    ])
+    .then(
+        async function roledepartment(department) {
+        const preB = await db;
+        await preB.execute('INSERT INTO roles (role_salary) VALUES (?);', [department]);
+        console.log("Role department Added!");
+    }
+    )
+    .then(() => init());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function addEmployeeFirstName() {
+    inquirer.prompt ([{
+        type: 'input',
+        name: 'addEmployeeFirstName',
+        message: 'What is the first name of the employee?'
+}
+])
+.then(
+    async function employeeFirstName(name) {
+    const preB = await db;
+    await preB.execute('INSERT INTO employees (employee_first_name) VALUES (?);', [name]);
+    console.log("employee first name Added!");
+}
+)
+.then(() => addEmployeeLastName());};
+
+
+function addEmployeeLastName() {
+inquirer.prompt ([{
+    type: 'input',
+    name: 'addEmployeeLastName',
+    message: 'What is the last name of the employee?'
+}
+])
+.then(
+async function employeeLastName(name) {
+const preB = await db;
+await preB.execute('INSERT INTO employees (employee_last_name) VALUES (?);', [name]);
+console.log("Employee last name Added!");
+}
+)
+.then(() => addEmployeeRole());};
+
+function addEmployeeRole() {
+
+    inquirer.prompt ([{
+        type: 'input',
+        name: 'addEmployeeRole',
+        message: 'What is the role of this employee?'
+}
+])
+.then(
+    async function employeeRole(role) {
+    const preB = await db;
+    await preB.execute('INSERT INTO employees (employee_role) VALUES (?);', [role]);
+    console.log("Employee role Added!");
+}
+)
+.then(() => addEmployeeManager());}
+
+function addEmployeeManager() {
+
+    inquirer.prompt ([{
+        type: 'input',
+        name: 'addEmployeeManager',
+        message: "Who is the manager of this employee?"
+}
+])
+.then(
+    async function employeeManager(manager) {
+    const preB = await db;
+    await preB.execute('INSERT INTO employees (employee_manager) VALUES (?);', [manager]);
+    console.log("Employee manager Added!");
+}
+)
+.then(() => init());
+}
         //   {
         //     type: 'input',
         //     name: 'addRoleName',
